@@ -9,6 +9,7 @@ function create_UIBox_HUD()
 
    local jokerFoundInfo = {n=G.UIT.R, config={id = "dv_joker_found_info", align = "cm", padding = 0.1}, nodes={}}
    table.insert(jokerFoundInfo.nodes, get_item_availability())
+   table.insert(contents.nodes[1].nodes[1].nodes[4].nodes[1].nodes, jokerFoundInfo)
 
 
    return contents
@@ -16,7 +17,7 @@ end
 
 -- Checks to see if the parametrized item is found within the filters
 function get_item_availability()
-    return {n=G.UIT.C, config={button = "my_button", my_data={1, 2, 3}}, nodes={
-      {n=G.UIT.T, config={text = "Hello world", colour = G.C.UI.TEXT_LIGHT, scale = 0.5}}
-    }}
+    return {n=G.UIT.C, config={align = "cm"}, nodes={
+            {n=G.UIT.T, config={text = "Hello world", colour = G.C.UI.TEXT_LIGHT, scale = 0.5}}
+         }}
 end
