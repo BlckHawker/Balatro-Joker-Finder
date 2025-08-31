@@ -3,10 +3,10 @@
 - [ ] Check to see if the shop after the small or big blind in the first ante has the Throwback Joker. Either in the shop, or in one of the boosters
     - [x] Get text on the screen below the score
     - [x] Get the seed for the current run
-    - [ ] Check what unlocks the user has when a run: (display)
-        - [ ]  is started
-        - [ ] is continued
-    - [ ] Check to see which deck the user is using for this run (display)
+    - [ ] Check when it's going to be in the shop
+        - [ ] Look to see if a mod that looks, but does not change the rng exists
+        - [ ] Look at the soul code and convert the c++ into lua
+    - [ ] Check if it's going to be in a booster
     - [ ] Check the header condition
 
 - [ ] Make a GUI that tells what the user wants in the round
