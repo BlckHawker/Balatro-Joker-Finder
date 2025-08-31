@@ -1,0 +1,9 @@
+{
+  "id": "JokerFinder",
+  "name": "Joker Finder",
+  "author": ["Hawker"],
+  "description": "This mod tells the user if the Throwback joker is in small or big blind",
+  "prefix": "jokerfinder",
+  "main_file": "main.lua",
+  "version": "1.0.0"
+}
