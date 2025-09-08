@@ -1,0 +1,99 @@
+I am trying to call create a "class" called `instance`. This is `instance.lua`:
+```lua
+local util = require("util")
+local Instance = {}
+
+-- Constructor function
+function Instance:new(s)
+    local instance = {
+        seed = s;
+        locked = {};
+        hashedSeed = pseudohash(self.seed); -- todo debug this
+        print(self.hashedSeed)
+        -- params = InstParams(); -- todo implement this
+        -- rng = LuaRandom(0); -- todo implement this
+        -- cache.generatedFirstPack = false; -- todo implement this
+
+        
+    }
+    setmetatable(instance, Instance) -- Link instance to the class's metatable
+    self.__index = self -- Ensure methods are looked up in the class table
+    return instance
+end
+
+-- Methods
+
+function Instance:test()
+    return "instance: " + self.seed
+end
+
+return Instance
+```
+I am calling this in a file called `interface.lua` like so.
+``` lua
+--- The Joker Finder - interface.lua
+
+-- The user interface components that display if the joker can be found with the parameters
+
+-- todo put this in a better place. Such as an game manager mod script
+local instance = require("instance")
+
+
+local orig_hud = create_UIBox_HUD
+function create_UIBox_HUD()
+   local contents = orig_hud()
+
+   local jokerFoundInfo = {n=G.UIT.R, config={id = "dv_joker_found_info", align = "cm", padding = 0.1}, nodes={}}
+   table.insert(jokerFoundInfo.nodes, get_item_availability())
+   table.insert(contents.nodes[1].nodes[1].nodes[4].nodes[1].nodes, jokerFoundInfo)
+
+
+   return contents
+end
+
+function get_item_availability()
+    return {n=G.UIT.C, config={align = "cm"}, nodes={
+               -- Seed 
+               {n=G.UIT.R, config={align = "cm"}, nodes={
+                  {n=G.UIT.T, config={text = tostring(G.GAME.pseudorandom.seed), colour = G.C.UI.TEXT_LIGHT, scale = 0.5}},
+               }},
+               -- hashedSeed
+               {n=G.UIT.R, config={align = "cm"}, nodes={
+                  {n=G.UIT.T, config={text = tostring(instance:new(G.GAME.pseudorandom.seed):test()), colour = G.C.UI.TEXT_LIGHT, scale = 0.5}},
+               }}
+            }}
+end
+```
+This should just be updated the UI on the left of a run so you can see the seed on top and `instance m: self.seed` right below it. But I get these error instead, and I'm not sure what to do. This was working until I created `instance.lua`
+
+```
+INFO - [G] Oops! The game crashed
+functions/UI_definitions.lua:6753: module 'instance' not found:
+	no field package.preload['instance']
+	no 'instance' in LOVE game directories.
+	no file 'instance' in LOVE paths.
+	no file '.\instance.lua'
+	no file 'G:\Steam\steamapps\common\Balatro\lua\instance.lua'
+	no file 'G:\Steam\steamapps\common\Balatro\lua\instance\init.lua'
+	no file '.\instance.dll'
+	no file 'G:\Steam\steamapps\common\Balatro\instance.dll'
+	no file 'G:\Steam\steamapps\common\Balatro\loadall.dll'
+Stack Traceback
+===============
+(1) Lua local 'handler' at file 'main.lua:612'
+	Local variables:
+	 msg = string: "functions/UI_definitions.lua:6753: module 'instance' not found:\
+\9no field package.preload['instance']\
+\9no 'instance' in LOVE game directories.\
+\9no file 'instance' in LOVE paths.\
+\9no file '.\\instance.lua'\
+\9no file 'G:\\Steam\\steamapps\\common\\Balatro\\lua\\instance.lua'\
+\9no file 'G:\\Steam\\steamapps\\common\\Balatro\\lua\\instance\\init.lua'\
+\9no file '.\\instance.dll'\
+\9no file 'G:\\Steam\\steamapps\\common\\Balatro\\instance.dll'\
+\9no file 'G:\\Steam\\steamapps\\common\\Balatro\\loadall.dll'"
+	 (*temporary) = Lua function '?' (defined at line 602 of chunk main.lua)
+	 (*temporary) = string: "Oops! The game crashed\
+     ```
+
+Here is the repo if that gives a better look https://github.com/BlckHawker/Balatro-Joker-Finder
